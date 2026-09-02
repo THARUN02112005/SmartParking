@@ -4,8 +4,8 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
 import { getDb, closeDb } from './database.js';
+import { runSeed } from './seed.js';
 import authRoutes from './routes/auth.js';
 import parkingRoutes from './routes/parking.js';
 import reservationRoutes from './routes/reservations.js';
@@ -127,8 +127,7 @@ function startServer() {
     const userCount = database.prepare('SELECT COUNT(*) as c FROM users').get() as { c: number };
     if (userCount.c === 0) {
       console.log('Empty database detected, seeding...');
-      const __dirnameServer = path.dirname(fileURLToPath(import.meta.url));
-      execSync('npm run seed', { cwd: path.join(__dirnameServer, '..'), stdio: 'inherit' });
+      runSeed();
     }
 
     server.listen(PORT, () => {

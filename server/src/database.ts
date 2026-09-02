@@ -5,7 +5,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DB_PATH = path.join(__dirname, '..', 'parking.db');
+// On read-only filesystem hosts (Cyclic, Vercel, etc.) write the DB to /tmp
+// since the app directory is not writable. Data resets per instance, which is
+// fine for a demo. Set DB_PATH explicitly to override.
+const localPath = path.join(__dirname, '..', 'parking.db');
+const DB_PATH =
+  process.env.DB_PATH ||
+  (process.env.PERSIST_DB === 'false' ? path.join('/tmp', 'parking.db') : localPath);
 
 let db: Database.Database;
 

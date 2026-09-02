@@ -2,7 +2,7 @@ import { getDb, closeDb } from './database.js';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 
-function seed() {
+export function seed() {
   const db = getDb();
 
   console.log('Clearing existing data...');
@@ -348,8 +348,13 @@ function seed() {
   console.log('   rahul@example.com / password123');
   console.log('   priya@example.com / password123');
   console.log('   amit@example.com  / password123\n');
-
-  closeDb();
 }
 
-seed();
+export function runSeed() {
+  seed();
+}
+
+if (process.argv[1] && process.argv[1].endsWith('seed.ts') || process.env.RUN_SEED_DIRECT) {
+  runSeed();
+  closeDb();
+}
