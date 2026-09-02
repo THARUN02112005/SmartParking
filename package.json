@@ -1,0 +1,13 @@
+{
+  "name": "smartparking",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd server && npm install && npm run build && cd ../client && npm install && npm run build",
+    "start": "cd server && node dist/index.js",
+    "seed": "cd server && npm run seed"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
